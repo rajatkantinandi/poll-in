@@ -7,7 +7,7 @@ app.use(express.static("public"));
 app.get('/',(req,res)=>{
     res.sendFile(path.join(__dirname,"views","index.html"));
 });
-app.listen(3000,(err)=>{
+app.listen(process.env.port||3000,(err)=>{
     if(err) throw err;
     console.log("Server started at port 3000");
 })
