@@ -1,0 +1,102 @@
+body{
+    display: flex;
+    flex-direction: column;
+}
+header{
+    height: 50px;
+    border:1px solid grey;
+    background: lavender;
+    display: flex;
+    align-items: center;
+    padding: 10px 30px;
+    width: 97%;
+    position: fixed;
+    top:0px;
+    left: 0px;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.login-area{
+    display: flex;
+    justify-content: flex-end;
+    width:100%;
+    align-items: center;
+}
+.btn{
+    font-size: 1.1em;
+    padding: 5px 15px;
+    border-radius: 10px;
+    margin:0px 5px;
+    border:1px solid grey;
+    box-shadow: 1px 1px 5px -1px black;
+}
+.btn-green{
+    background: #2a2;
+    color:white;
+    border:1px solid green;
+}
+.btn-blue{
+    background: #22a;
+    color:white;
+    border:1px solid blue;
+}
+@keyframes btn-anim{
+    to{
+        color: brown;
+        background: aliceblue;
+        font-weight: bold;
+    }
+}
+.btn:hover{
+    animation: btn-anim .35s ease-out;
+    animation-fill-mode: forwards;
+}
+.hidden{
+    display: none;
+}
+@keyframes showme{
+    to{
+        transform: scale(1);
+    }
+}
+.qvisible{
+    display:flex;
+    transform: scale(0.1);
+    animation: showme .3s ease-in;
+    animation-fill-mode: forwards;
+    padding: 20px 30px;
+    border-radius: 15px;
+    border:1px solid green;
+    box-shadow: 0px 0px 18px -2px black;
+    z-index: 10;
+    position: fixed;
+    top:20%;
+    flex-direction: column;
+    align-self: center;
+}
+.qvisible form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+form input{
+    padding: 5px 15px;
+    border:1px solid blue;
+    border-radius: 10px;
+    font-size: 1.1em;
+    margin: 10px 5px;
+}
+form input:focus{
+    box-shadow: 0px 0px 10px -1px blue;
+}
+form button{
+    align-self: flex-end;
+}
+.close-btn{
+    align-self: flex-end;
+    border-radius: 50%;
+    padding:3px 5px;
+    font-weight: bolder;
+    text-decoration: none;
+    border:1px solid black;
+}
