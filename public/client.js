@@ -39,31 +39,51 @@ function ajaxreq(method,url,callback1,callback2){
   xhttp.send();
 }
 let useravail=false;
-document.querySelector("#username-signup").addEventListener("keyup",(e)=>{
-    let status=document.querySelector("#username-status");
-    let username=e.target.value;
-    status.innerHTML="";
-    if(username!=""){
-    status.innerHTML="Checking...";
-    useravail=false;
-    ajaxreq("GET","/checkavailuser/"+username,()=>{
-    status.innerHTML="✔ Username available";
-    status.style.background="#9c9";
-    useravail=true;
-    },()=>{
-    status.innerHTML="❌ Username unavailable, choose another";status.style.background="#c99";
-    useravail=false;
-    });
+let passmatch=false;
+document.querySelectorAll("#sign-up-form input").forEach((elem)=>{
+    elem.addEventListener("keyup",(e)=>{
+    document.querySelector("#sign-up-form button").disabled=true;
+    let target=e.target;
+    if(target==document.querySelector("#username-signup")){
+        useravail=false;
+        useravail1(target.value);
     }
-});
-document.querySelector("#password-signup-repeat").addEventListener("keyup",(e)=>{
-    if(e.target.value==document.querySelector("#password-signup").value){
-        document.querySelector("#password-status").innerHTML="Passwords matched";
-        if(useravail){
+    else if(target==document.querySelector("input#password-signup-repeat")){
+        passmatch=false;
+        passmatch1(target.value);
+    }
+
+    //functions
+    function useravail1(username){
+        let status=document.querySelector("#username-status");
+        status.innerHTML="";
+        if(username!=""){
+        status.innerHTML="Checking...";
+        ajaxreq("GET","/checkavailuser/"+username,()=>{
+        status.innerHTML="✅ Username available";
+        status.style.background="#9c9";
+        useravail=true;
+        enablesignupbtn();
+        },()=>{
+        status.innerHTML="❌ Username unavailable, choose another";status.style.background="#c99";
+        enablesignupbtn();
+        });
+        }
+    }
+    function passmatch1(password){
+        if(password==document.querySelector("#password-signup").value){
+            document.querySelector("#password-status").innerHTML="✅ Passwords matched";
+            passmatch=true;
+        }
+        else{
+            document.querySelector("#password-status").innerHTML="❌ Passwords doesn't match";
+        }
+        enablesignupbtn();
+    }
+    function enablesignupbtn(){
+        if(useravail==true&&passmatch==true){
             document.querySelector("#sign-up-form button").disabled=false;
         }
     }
-    else{
-        document.querySelector("#password-status").innerHTML="Passwords doesn't match";
-    }
-})
+});
+});

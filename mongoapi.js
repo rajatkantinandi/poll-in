@@ -17,7 +17,7 @@ function checkavail(user,res) {
                     res.send("Username available");
                 }
                 else{
-                    res.status(404);
+                    res.status(409);
                     res.send("Username unavailable");
                 }
             });
@@ -35,7 +35,7 @@ function login(req,res,user,pass){
             let collectn = db.collection("users");
             collectn.findOne({"username":user},(err,result)=>{
                 if(!result){
-                    res.status(404).send("Invalid Username!!");
+                    res.status(403).send("Invalid Username!!");
                 }
                 else{
                     let passString=hash(pass,result.salt);
@@ -44,7 +44,7 @@ function login(req,res,user,pass){
                         res.status(200).send("User "+user+" logged in successfully");
                     }
                     else{
-                        res.status(404).send("Invalid password!!");
+                        res.status(403).send("Invalid password!!");
                     }
                 }
             });

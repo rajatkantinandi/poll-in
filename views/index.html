@@ -86,7 +86,7 @@
         <form action="/signin" method="post">
             <h2>Login to Poll-in</h2>
             <input type="text" name="username" id="username-login" placeholder="Username" required/>
-            <input type="password" name="password" id="password-login" placeholder="Password" required minlength="8" pattern="\w{8}\w+"/>
+            <input type="password" name="password" id="password-login" placeholder="Password" required minlength="8" pattern="\w{8}\w*"/>
             <button type="submit" class="btn btn-blue">Log in</button>
         </form>
     </div>
@@ -95,7 +95,8 @@
             <form action="/signup" method="post">
                 <h2>Sign up for Poll-in</h2>
                 <input type="text" name="username" id="username-signup" placeholder="Username" required  autocomplete="off"/>  <span id="username-status"></span>
-                <input type="password" name="password" id="password-signup" placeholder="Password" required minlength="8" pattern="\w{8}\w+"/>
+                <input type="password" name="password" id="password-signup" placeholder="Password" required minlength="8" pattern="\w{7}\w*"/>
+                <span style="color:#000080;">* Min 8 chars, only letters & numbers</span>
                 <input type="password" name="password-r" id="password-signup-repeat" placeholder="Repeat Password" required/><span id="password-status"></span>
                 <button type="submit" class="btn btn-green" disabled>Sign Up</button>
             </form>
