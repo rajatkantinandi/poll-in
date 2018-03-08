@@ -62,6 +62,9 @@ header{
     animation: btn-anim .35s ease-out;
     animation-fill-mode: forwards;
 }
+button:disabled{
+    background: grey;
+}
 .hidden{
     display: none;
 }
@@ -93,13 +96,16 @@ header{
 }
 form input{
     padding: 5px 15px;
-    border:1px solid blue;
+    border:1px solid green;
     border-radius: 10px;
     font-size: 1.1em;
     margin: 10px 5px;
 }
 form input:focus{
-    box-shadow: 0px 0px 10px -1px blue;
+    box-shadow: 0px 0px 10px -1px green;
+}
+form input:invalid{
+    box-shadow: 0px 0px 15px -1px red;
 }
 form button{
     align-self: flex-end;
