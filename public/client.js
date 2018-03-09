@@ -3,7 +3,10 @@ document.querySelector(".loader-bg").style.display="none";
 document.querySelector(".login-area").style.display="none";document.querySelector("#signout").style.display="block";
 },()=>{
     document.querySelector(".loader-bg").style.display="none";
-})
+});
+function signout(){
+    window.location.replace('/signout');
+}
 function show(area){
     let obj=document.getElementById(area);
     obj.className="qvisible";

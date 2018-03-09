@@ -37,6 +37,10 @@ app.get('/checkloggedin',(req,res)=>{
         res.status(401).send({user:null});
     }
 });
+app.get('/signout',(req,res)=>{
+    req.session.destroy();
+    res.redirect('/');
+});
 app.listen(process.env.PORT,(err)=>{
     if(err) throw err;
     console.log("Server started at port "+process.env.PORT);
