@@ -41,7 +41,7 @@ function login(req,res,user,pass){
                     let passString=hash(pass,result.salt);
                     if(passString==result.password){
                         req.session.auth={username:user};
-                        res.status(200).send("User "+user+" logged in successfully");
+                        res.status(200).redirect("/");
                     }
                     else{
                         res.status(403).send("Invalid password!!");

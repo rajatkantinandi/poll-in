@@ -28,8 +28,16 @@ app.post('/signup',(req,res)=>{
 });
 app.get('/checkavailuser/:username',(req,res)=>{
     mongoapi.checkavail(req.params.username,res);
-})
+});
+app.get('/checkloggedin',(req,res)=>{
+    if(req.session&&req.session.auth&&req.session.auth.username){
+        res.status(200).send({user:req.session.auth.username});
+    }
+    else{
+        res.status(401).send({user:null});
+    }
+});
 app.listen(process.env.PORT,(err)=>{
     if(err) throw err;
     console.log("Server started at port "+process.env.PORT);
-})
+});
