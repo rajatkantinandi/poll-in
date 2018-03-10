@@ -41,6 +41,29 @@ app.get('/signout',(req,res)=>{
     req.session.destroy();
     res.redirect('/');
 });
+app.get('/trending-polls',(req,res)=>{
+    mongoapi.getTrendingPolls(res);
+});
+app.post('/vote',(req,res)=>{
+    let poll=req.body.poll;
+    let id=req.body.id;
+    mongoapi.vote(id,poll,res);
+});
+app.post('/create-poll',(req,res)=>{
+    let question=req.body.question;
+    let options=[];
+    options.push({"value":req.body.option1,"votes":0});
+    options.push({"value":req.body.option2,"votes":0});
+    options.push({"value":req.body.option3,"votes":0});
+    options.push({"value":req.body.option4,"votes":0});
+    let obj={
+        "question":question,
+        "options":options,
+        "createdBy":"rajatkn",
+        "totalvotes":0
+    };
+    mongoapi.createPoll(obj,res);
+});
 app.listen(process.env.PORT,(err)=>{
     if(err) throw err;
     console.log("Server started at port "+process.env.PORT);

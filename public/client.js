@@ -1,9 +1,36 @@
-ajaxreq("get","/checkloggedin",()=>{
-document.querySelector(".loader-bg").style.display="none";
+ajaxreq("get","/checkloggedin",(result)=>{
 document.querySelector(".login-area").style.display="none";document.querySelector("#signout").style.display="block";
+document.querySelector(".trending-polls").style.display="block";
+document.querySelector(".create-polls").style.display="block";
+showtrending(document.querySelector(".trending-polls"));
 },()=>{
     document.querySelector(".loader-bg").style.display="none";
 });
+function showtrending(container){
+    ajaxreq("get","/trending-polls",(result)=>{
+        document.querySelector(".loader-bg").style.display="none";
+        let child="<h3>Trending Polls</h3>";
+        result=JSON.parse(result);
+        result.forEach((item)=>{
+            let question=item.question;
+            let options=item.options;
+            let createdBy=item.createdBy;
+            let id=item["_id"];
+            console.log(id);
+            child+="<div class='poll'><b>"+question+"</b>";
+            child+="<form action='/vote' method='post'><div class='options'>";
+            child+="<input type='hidden' name='id' value='"+id+"'/>";
+            for(option of options){
+                child+="<div class='option'><input type='radio' name='poll' value='"+option.value+"'/><span class='option-val'>"+option.value+"</span></div>";
+            }
+            child+="</div><button class='btn btn-green' type='submit'>Vote</button></form>";
+            child+="</div>";
+        });
+        container.innerHTML=child;
+    },()=>{
+        container.innerHTML="<h3>Error getting data!!</h3>";
+    });
+}
 function signout(){
     window.location.replace('/signout');
 }
@@ -38,7 +65,7 @@ function ajaxreq(method,url,callback1,callback2){
     let xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-    callback1();
+    callback1(this.responseText);
     }
     else if(this.readyState==4&&this.status!=200){
     callback2();
@@ -68,7 +95,7 @@ document.querySelectorAll("#sign-up-form input").forEach((elem)=>{
         status.innerHTML="";
         if(username!=""){
         status.innerHTML="Checking...";
-        ajaxreq("GET","/checkavailuser/"+username,()=>{
+        ajaxreq("GET","/checkavailuser/"+username,(result)=>{
         status.innerHTML="✅ Username available";
         status.style.background="#9c9";
         useravail=true;
