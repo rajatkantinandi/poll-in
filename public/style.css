@@ -51,8 +51,12 @@ header{
     width:100%;
     align-items: center;
 }
-#signout{
+.logged-in-area{
     display: none;
+}
+#usericon{
+    text-decoration: none;
+    font-size: 18;
 }
 .btn{
     font-size: 1.1em;

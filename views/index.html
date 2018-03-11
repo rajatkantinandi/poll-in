@@ -150,7 +150,10 @@
         <button id="login" class="btn btn-blue" onclick="show('sign-in-form');focusto('username-login')">Sign In</button>
         <button id="signup" class="btn btn-green" onclick="show('sign-up-form');focusto('username-signup')">Sign Up</button>
         </div>
+        <div class="logged-in-area">
+        <a href="/username" id="usericon" class="btn btn-green">🙍‍ Username</a>
         <button id="signout" class="btn btn-red" onclick="signout()">Sign Out</button>
+        </div>
     </header>
     <div class="modals">
       <div class="bg-layer"></div>
@@ -179,8 +182,9 @@
       <div class="trending-polls"></div>
       <div class="create-polls">
         <h3>Create a Poll</h3>
-        <form action="/create-poll" method="POST">
-          <input type="text" class="input-txt" name="question" placeholder="Enter the question" style="width:80%;"/><br>
+        <form action="/create-poll" method="POST" onsubmit="return createPoll()">
+          <input type="hidden" name="userid" value="" id="poll-submit-auth"/>
+          <input type="text" class="input-txt" name="question" id="question-to-submit" placeholder="Enter the question" style="width:80%;"/><br>
           <input type="text" class="input-txt" name="option1" placeholder="Enter the option1"/> &nbsp;
           <input type="text" class="input-txt" name="option2" placeholder="Enter the option2"/><br>
           <input type="text" class="input-txt" name="option3" placeholder="Enter the option3"/> &nbsp;

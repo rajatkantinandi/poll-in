@@ -1,5 +1,9 @@
+let auth_user=null;
 ajaxreq("get","/checkloggedin",(result)=>{
-document.querySelector(".login-area").style.display="none";document.querySelector("#signout").style.display="block";
+auth_user=JSON.parse(result).user;
+document.querySelector(".login-area").style.display="none";document.querySelector(".logged-in-area").style.display="block";
+document.querySelector("#usericon").innerHTML="🙍‍ "+JSON.parse(result).username;
+document.querySelector("#usericon").href="/"+JSON.parse(result).username;
 document.querySelector(".trending-polls").style.display="block";
 document.querySelector(".create-polls").style.display="block";
 showtrending(document.querySelector(".trending-polls"));
@@ -33,6 +37,17 @@ function showtrending(container){
 }
 function signout(){
     window.location.replace('/signout');
+}
+function createPoll(){
+    document.querySelector("#poll-submit-auth").value=auth_user;
+    if(document.querySelector("#question-to-submit").value.endsWith("?")){
+        return true;
+    }
+    else{
+        alert("Invalid question type.\nPlease put a question-mark at the end.");
+        return false;
+    }
+    return false;
 }
 function show(area){
     let obj=document.getElementById(area);

@@ -30,8 +30,8 @@ app.get('/checkavailuser/:username',(req,res)=>{
     mongoapi.checkavail(req.params.username,res);
 });
 app.get('/checkloggedin',(req,res)=>{
-    if(req.session&&req.session.auth&&req.session.auth.username){
-        res.status(200).send({user:req.session.auth.username});
+    if(req.session&&req.session.auth&&req.session.auth.userid){
+        mongoapi.showuser(req.session.auth.userid,res);
     }
     else{
         res.status(401).send({user:null});
@@ -51,6 +51,7 @@ app.post('/vote',(req,res)=>{
 });
 app.post('/create-poll',(req,res)=>{
     let question=req.body.question;
+    let userid=req.body.userid;
     let options=[];
     options.push({"value":req.body.option1,"votes":0});
     options.push({"value":req.body.option2,"votes":0});
@@ -59,7 +60,7 @@ app.post('/create-poll',(req,res)=>{
     let obj={
         "question":question,
         "options":options,
-        "createdBy":"rajatkn",
+        "createdBy":userid,
         "totalvotes":0
     };
     mongoapi.createPoll(obj,res);
