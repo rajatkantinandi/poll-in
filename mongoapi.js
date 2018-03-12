@@ -154,6 +154,30 @@ function showuser(id,res){
         }
     }
 }
+function getUserPage(userid,res){
+    mongo.connect(process.env.MONGOURI, conn);
+    function conn(err, client) {
+        if (err) {
+            throw err;
+        }
+        else {
+            let db = client.db("voting-app");
+            let collectn = db.collection("users");
+            let o_id = new require('mongodb').ObjectID(userid);
+            collectn.findOne({"_id":o_id},(err,result)=>{
+                if(err) throw err;
+                else if(result){
+                    let username=result.username;
+                    res.status(200).send("<h1>Welcome "+username+"</h1>");
+                }
+                else {
+                    res.status(403).send("Unauthorised access");
+                }
+            });
+        }
+    }
+}
+
 function hash(input, salt) {
     let hashed = crypto.pbkdf2Sync(input, salt, 500, 10, 'md5');
     return hashed.toString('hex');
@@ -165,5 +189,6 @@ module.exports = {
     "getTrendingPolls": getTrendingPolls, 
     "vote": vote, 
     "createPoll": createPoll,
-    "showuser":showuser 
+    "showuser":showuser,
+    "getUserPage":getUserPage 
 };

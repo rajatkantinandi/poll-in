@@ -4,6 +4,8 @@ auth_user=JSON.parse(result).user;
 document.querySelector(".login-area").style.display="none";document.querySelector(".logged-in-area").style.display="block";
 document.querySelector("#usericon").innerHTML="🙍‍ "+JSON.parse(result).username;
 document.querySelector("#usericon").href="/"+JSON.parse(result).username;
+document.querySelector("#usericon").setAttribute('data-userid',auth_user);
+document.querySelector("#usericon").addEventListener("click",userpage);
 document.querySelector(".trending-polls").style.display="block";
 document.querySelector(".create-polls").style.display="block";
 showtrending(document.querySelector(".trending-polls"));
