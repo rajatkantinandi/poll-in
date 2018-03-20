@@ -68,6 +68,9 @@ app.post('/create-poll',(req,res)=>{
 app.get("/user/:userid",(req,res)=>{
     mongoapi.getUserPage(req.params.userid,res);
 });
+app.get("/delete-poll",(req,res)=>{
+    res.send("Deleted");
+});
 app.listen(process.env.PORT,(err)=>{
     if(err) throw err;
     console.log("Server started at port "+process.env.PORT);

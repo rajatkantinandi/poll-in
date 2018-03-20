@@ -8,21 +8,21 @@ document.querySelector("#usericon").setAttribute('data-userid',auth_user);
 document.querySelector("#usericon").addEventListener("click",userpage);
 document.querySelector("#trending-polls").style.display="block";
 document.querySelector(".create-polls").style.display="block";
-showtrending(document.querySelector("#trending-polls"));
+showtrending(document.querySelector("#trending-polls"),JSON.parse(result).username);
 },()=>{
     document.querySelector(".loader-bg").style.display="none";
 });
-function showtrending(container){
+function showtrending(container,username){
     ajaxreq("get","/trending-polls",(result)=>{
         document.querySelector(".loader-bg").style.display="none";
         let child="<h3>Popular Polls</h3>";
         result=JSON.parse(result);
-        showpolls(result,container,child);
+        showpolls(result,container,child,username);
     },()=>{
         container.innerHTML="<h3>Error getting data!!</h3>";
     });
 }
-function showpolls(result,container,child){
+function showpolls(result,container,child,username){
     result.forEach((item)=>{
         let question=item.question;
         let options=item.options;
@@ -34,8 +34,12 @@ function showpolls(result,container,child){
         for(option of options){
             child+="<div class='option'><input type='radio' name='poll' value='"+option.value+"'/><span class='option-val'>"+option.value+"</span></div>";
         }
-        child+="</div><button class='btn btn-green' type='submit'>Vote</button></form>";
-        child+="</div>";
+        child+="</div><div><button class='btn btn-green' type='submit'>Vote</button> ";
+        if(createdBy===username){
+            child+="<a href='delete-poll?id="+id+"&userid="+auth_user+"' class='btn btn-red'>Delete</a> ";
+        }
+        child+="<a class='btn btn-blue' href='#' data-results='"+JSON.stringify(options)+"' type='reset' onclick='showresult(event)'>Show Result</a>";
+        child+="</div></form></div>";
     });
     container.innerHTML=child;
 }
@@ -152,3 +156,6 @@ document.querySelector("#hamburger-menu-btn").addEventListener("click",(e)=>{
     document.querySelector(".main-content").style.margin="100px 0px 0px 200px";
     }
 });
+function showresult(e){
+        alert("Votes are: \n"+e.target.getAttribute('data-results'));
+}

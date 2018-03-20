@@ -10,8 +10,8 @@ function userpage(e){
         </div>`;
         document.querySelector(".main-content").innerHTML=toRender;
         document.querySelector(".polls").style.display="block";
-        showpolls(result.polls.reverse(),document.querySelector(".main-content #pollsbyuser"),"<h3>All polls</h3>");
+        showpolls(result.polls.reverse(),document.querySelector(".main-content #pollsbyuser"),"<h3>All polls</h3>",e.target.innerHTML.split(" ")[1]);
     },()=>{
         alert("error");
-    })
+    });
 }
