@@ -38,7 +38,7 @@ function showpolls(result,container,child,username){
         if(createdBy===username){
             child+="<a href='delete-poll?id="+id+"&userid="+auth_user+"' class='btn btn-red'>Delete</a> ";
         }
-        child+="<a class='btn btn-blue' href='#' data-results='"+JSON.stringify(options)+"' type='reset' onclick='showresult(event)'>Show Result</a>";
+        child+="<a class='btn btn-blue' href='#' data-results='"+JSON.stringify(options)+"' data-title='"+question+"' type='reset' onclick='showresult(event)'>Show Result</a>";
         child+="</div></form></div>";
     });
     container.innerHTML=child;
@@ -157,5 +157,25 @@ document.querySelector("#hamburger-menu-btn").addEventListener("click",(e)=>{
     }
 });
 function showresult(e){
-        alert("Votes are: \n"+e.target.getAttribute('data-results'));
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+      let values=[
+        ['Option', 'Votes']
+      ];
+      let result_votes=JSON.parse(e.target.getAttribute('data-results'));
+      for(vote of result_votes){
+          values.push([vote.value,vote.votes]);
+      }
+      let data = google.visualization.arrayToDataTable(values);
+      let options = {
+        title: e.target.getAttribute('data-title'),
+        is3D: true,
+      };
+
+      let chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+      chart.draw(data, options);
+    }
+        show("chart");
 }

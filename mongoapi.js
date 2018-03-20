@@ -101,7 +101,7 @@ function vote(id, poll, res) {
             let collectn = db.collection("polls");
             let o_id = new require('mongodb').ObjectID(id);
             collectn.updateOne({ "_id": o_id, "options.value": poll }, { $inc: { "totalvotes": 1, "options.$.votes": 1 } });
-            res.status(200).redirect("/trending-polls");
+            res.status(200).redirect("/");
         }
     }
 }

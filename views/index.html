@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Poll-in: The Voting App</title>
     <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
   <div class="loader-bg">
@@ -22,7 +23,8 @@
       <div class="logged-in-area">
         <button id="usericon" data-userid="" class="btn btn-green">🙍‍ Username</a>
         <button id="signout" class="btn btn-red" onclick="signout()">Sign Out</button>
-        <div class="hamburger-menu">     
+        <div class="hamburger-menu"> 
+          <h3 style="padding:4px 8px;border-radius:10px;background:navajowhite;cursor: pointer;">Popular Polls</h3>    
         </div>
       </div>
     </header>
@@ -47,6 +49,11 @@
                   <input type="password" name="password-r" id="password-signup-repeat" placeholder="Repeat Password" required/><span id="password-status"></span>
                   <button type="submit" class="btn btn-green" disabled>Sign Up</button>
               </form>
+      </div>
+      <div id="chart" class="hidden">
+          <a href="#" class="close-btn">X</a>
+          <center><h2>Result</h2></center>
+          <div id="piechart" style="width:500px;height:400px;"></div>
       </div>
     </div>
     <div class="main-content">
