@@ -6,10 +6,10 @@ function userpage(e){
         result=JSON.parse(result);
         let toRender=`<div class='userpage'>
            <h1>${result.username}</h1>
-           <div class='polls'></div> 
+           <div class='polls' id='pollsbyuser'></div> 
         </div>`;
         document.querySelector(".main-content").innerHTML=toRender;
-        showpolls(result.polls,document.querySelector(".main-content .pollsbyuser"),"<h3>All polls</h3>");
+        showpolls(result.polls,document.querySelector(".main-content #pollsbyuser"),"<h3>All polls</h3>");
     },()=>{
         alert("error");
     })

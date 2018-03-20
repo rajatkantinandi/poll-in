@@ -6,9 +6,9 @@ document.querySelector("#usericon").innerHTML="🙍‍ "+JSON.parse(result).user
 document.querySelector("#usericon").href="/"+JSON.parse(result).username;
 document.querySelector("#usericon").setAttribute('data-userid',auth_user);
 document.querySelector("#usericon").addEventListener("click",userpage);
-document.querySelector(".trending-polls").style.display="block";
+document.querySelector("#trending-polls").style.display="block";
 document.querySelector(".create-polls").style.display="block";
-showtrending(document.querySelector(".trending-polls"));
+showtrending(document.querySelector("#trending-polls"));
 },()=>{
     document.querySelector(".loader-bg").style.display="none";
 });
