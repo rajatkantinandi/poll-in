@@ -9,6 +9,7 @@ function userpage(e){
            <div class='polls' id='pollsbyuser'></div> 
         </div>`;
         document.querySelector(".main-content").innerHTML=toRender;
+        document.querySelector(".polls").style.display="block";
         showpolls(result.polls,document.querySelector(".main-content #pollsbyuser"),"<h3>All polls</h3>");
     },()=>{
         alert("error");
