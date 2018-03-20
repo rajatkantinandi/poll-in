@@ -167,8 +167,19 @@ function getUserPage(userid,res){
             collectn.findOne({"_id":o_id},(err,result)=>{
                 if(err) throw err;
                 else if(result){
+                    let collectn2=db.collection("polls");
                     let username=result.username;
-                    res.status(200).send("<h1>Welcome "+username+"</h1>");
+                    let responseToSend={
+                        "username":username,
+                        "polls":[]
+                    };
+                    collectn2.find({"createdBy":username}).toArray((err,results)=>{
+                        if(err) throw err;
+                        results.forEach(element => {
+                            responseToSend.polls.push(element);
+                        });
+                        res.status(200).send(JSON.stringify(responseToSend));
+                    });
                 }
                 else {
                     res.status(403).send("Unauthorised access");

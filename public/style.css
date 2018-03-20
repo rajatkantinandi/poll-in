@@ -156,7 +156,7 @@ button:disabled{
     flex-wrap: wrap;
     justify-content: center;
 }
-.trending-polls{
+.polls{
     width:45%;
     display: none;
     background: lightcyan;

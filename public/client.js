@@ -17,25 +17,28 @@ function showtrending(container){
         document.querySelector(".loader-bg").style.display="none";
         let child="<h3>Trending Polls</h3>";
         result=JSON.parse(result);
-        result.forEach((item)=>{
-            let question=item.question;
-            let options=item.options;
-            let createdBy=item.createdBy;
-            let id=item["_id"];
-            console.log(id);
-            child+="<div class='poll'><b>"+question+"</b>";
-            child+="<form action='/vote' method='post'><div class='options'>";
-            child+="<input type='hidden' name='id' value='"+id+"'/>";
-            for(option of options){
-                child+="<div class='option'><input type='radio' name='poll' value='"+option.value+"'/><span class='option-val'>"+option.value+"</span></div>";
-            }
-            child+="</div><button class='btn btn-green' type='submit'>Vote</button></form>";
-            child+="</div>";
-        });
-        container.innerHTML=child;
+        showpolls(result,container,child);
     },()=>{
         container.innerHTML="<h3>Error getting data!!</h3>";
     });
+}
+function showpolls(result,container,child){
+    result.forEach((item)=>{
+        let question=item.question;
+        let options=item.options;
+        let createdBy=item.createdBy;
+        let id=item["_id"];
+        console.log(id);
+        child+="<div class='poll'><b>"+question+"</b>";
+        child+="<form action='/vote' method='post'><div class='options'>";
+        child+="<input type='hidden' name='id' value='"+id+"'/>";
+        for(option of options){
+            child+="<div class='option'><input type='radio' name='poll' value='"+option.value+"'/><span class='option-val'>"+option.value+"</span></div>";
+        }
+        child+="</div><button class='btn btn-green' type='submit'>Vote</button></form>";
+        child+="</div>";
+    });
+    container.innerHTML=child;
 }
 function signout(){
     window.location.replace('/signout');
