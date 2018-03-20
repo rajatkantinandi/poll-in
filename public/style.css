@@ -157,7 +157,6 @@ button:disabled{
     justify-content: center;
 }
 .polls{
-    width:45%;
     display: none;
     background: lightcyan;
     color: #112;
