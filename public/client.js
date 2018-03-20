@@ -1,7 +1,7 @@
 let auth_user=null;
 ajaxreq("get","/checkloggedin",(result)=>{
 auth_user=JSON.parse(result).user;
-document.querySelector(".login-area").style.display="none";document.querySelector(".logged-in-area").style.display="block";
+document.querySelector(".login-area").style.display="none";document.querySelector(".logged-in-area").style.display="flex";
 document.querySelector("#usericon").innerHTML="🙍‍ "+JSON.parse(result).username;
 document.querySelector("#usericon").href="/"+JSON.parse(result).username;
 document.querySelector("#usericon").setAttribute('data-userid',auth_user);
@@ -15,7 +15,7 @@ showtrending(document.querySelector("#trending-polls"));
 function showtrending(container){
     ajaxreq("get","/trending-polls",(result)=>{
         document.querySelector(".loader-bg").style.display="none";
-        let child="<h3>Trending Polls</h3>";
+        let child="<h3>Popular Polls</h3>";
         result=JSON.parse(result);
         showpolls(result,container,child);
     },()=>{
@@ -28,7 +28,6 @@ function showpolls(result,container,child){
         let options=item.options;
         let createdBy=item.createdBy;
         let id=item["_id"];
-        console.log(id);
         child+="<div class='poll'><b>"+question+"</b>";
         child+="<form action='/vote' method='post'><div class='options'>";
         child+="<input type='hidden' name='id' value='"+id+"'/>";
@@ -142,4 +141,14 @@ document.querySelectorAll("#sign-up-form input").forEach((elem)=>{
         }
     }
 });
+});
+document.querySelector("#hamburger-menu-btn").addEventListener("click",(e)=>{
+    if(document.querySelector(".hamburger-menu")){       
+    document.querySelector(".main-content").style.margin="100px 0px 0px 0px";
+    document.querySelector(".hamburger-menu").className="hamburger-menu-hidden";
+    }
+    else{
+    document.querySelector(".hamburger-menu-hidden").className="hamburger-menu";
+    document.querySelector(".main-content").style.margin="100px 0px 0px 200px";
+    }
 });
