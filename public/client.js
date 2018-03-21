@@ -48,8 +48,9 @@ function deletePoll(e){
     let r = confirm("Are you sure you want to delete!");e.target.innerHTML="Deleting...";
     if (r == true) {
         ajaxreq("get","/deletepoll?id="+poll_id+"&userid="+auth_user,(result)=>{
-            let delem=document.querySelector("#"+poll_id);
+            let delem=document.getElementById(poll_id);
             delem.parentElement.removeChild(delem);
+            console.log("deleted:"+poll_id);
         },()=>{});
     }
 }
