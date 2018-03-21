@@ -10,7 +10,9 @@ app.use(express.static("public"));
 app.use(bodyparser.urlencoded({extended: false}));
 app.use(session({
     secret:"Number :"+Math.random()*25,
-    cookie:{maxAge:1000*60*60*24*30}
+    cookie:{maxAge:1000*60*60*24*30},
+    resave:false,
+    saveUninitialized:true
 }));
 //Routing
 app.get('/',(req,res)=>{
@@ -68,8 +70,11 @@ app.post('/create-poll',(req,res)=>{
 app.get("/user/:userid",(req,res)=>{
     mongoapi.getUserPage(req.params.userid,res);
 });
-app.get("/delete-poll",(req,res)=>{
-    res.send("Deleted");
+app.get("/deletepoll",(req,res)=>{
+    let userid=req.query.userid;
+    let pollid=req.query.id;
+    console.log(pollid+"\n"+userid);
+    mongoapi.deletePoll(userid,pollid,res);
 });
 app.listen(process.env.PORT,(err)=>{
     if(err) throw err;

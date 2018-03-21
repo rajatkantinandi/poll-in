@@ -28,7 +28,7 @@ function showpolls(result,container,child,username){
         let options=item.options;
         let createdBy=item.createdBy;
         let id=item["_id"];
-        child+="<div class='poll'><b>"+question+"</b>";
+        child+="<div class='poll' id='"+id+"'><b>"+question+"</b>";
         child+="<form action='/vote' method='post'><div class='options'>";
         child+="<input type='hidden' name='id' value='"+id+"'/>";
         for(option of options){
@@ -36,12 +36,22 @@ function showpolls(result,container,child,username){
         }
         child+="</div><div><button class='btn btn-green' type='submit'>Vote</button> ";
         if(createdBy===username){
-            child+="<a href='delete-poll?id="+id+"&userid="+auth_user+"' class='btn btn-red'>Delete</a> ";
+            child+="<a href='javascript:null' onclick='deletePoll(event)' class='btn btn-red' data-id='"+id+"'>Delete</a> ";
         }
-        child+="<a class='btn btn-blue' href='#' data-results='"+JSON.stringify(options)+"' data-title='"+question+"' type='reset' onclick='showresult(event)'>Show Result</a>";
+        child+="<a class='btn btn-blue' href='javascript:null' data-results='"+JSON.stringify(options)+"' data-title='"+question+"' type='reset' onclick='showresult(event)'>Show Result</a>";
         child+="</div></form></div>";
     });
     container.innerHTML=child;
+}
+function deletePoll(e){
+    let poll_id=e.target.getAttribute("data-id");
+    let r = confirm("Are you sure you want to delete!");e.target.innerHTML="Deleting...";
+    if (r == true) {
+        ajaxreq("get","/deletepoll?id="+poll_id+"&userid="+auth_user,(result)=>{
+            let delem=document.querySelector("#"+poll_id);
+            delem.parentElement.removeChild(delem);
+        },()=>{});
+    }
 }
 function signout(){
     window.location.replace('/signout');
