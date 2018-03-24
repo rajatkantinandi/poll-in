@@ -23,6 +23,7 @@
       </div>
       {{else}}
       <div class="logged-in-area">
+        <button class="btn btn-green create-polls-btn" onclick="showcreate(event)">+ New Poll</button>
         <button id="usericon" data-userid="{{userid}}" class="btn btn-green" data-username="{{username}}" onclick="userpage(event)">👤 {{username}}</a>
         <button id="signout" class="btn btn-red" onclick="signout()">Sign Out</button>
         <div class="hamburger-menu"> 
@@ -63,7 +64,27 @@
           </div>
       </div>
     </div>
-    <div class="main-content">
+    <div class="main-content" {{#if loggedout}}style="margin-left:0px;"{{/if}}>
+        {{#if loggedout}} 
+        {{else}}
+      <div class="create-polls">
+        <h3>Create a Poll</h3>
+        <form action="/create-poll" method="POST" onsubmit="return createPoll()">
+          <input type="text" class="input-txt" name="question" id="question-to-submit" placeholder="Enter the question" style="width:80%;"
+          />
+          <br>
+          <input type="text" class="input-txt" name="option1" placeholder="Enter the option1" /> &nbsp;
+          <input type="text" class="input-txt" name="option2" placeholder="Enter the option2" />
+          <br>
+          <input type="text" class="input-txt" name="option3" placeholder="Enter the option3" /> &nbsp;
+          <input type="text" class="input-txt" name="option4" placeholder="Enter the option4" />
+          <br>
+          <center>
+            <button type="submit" class="btn btn-blue" style="width:60%">Publish Poll</button>
+          </center>
+        </form>
+      </div>
+      {{/if}}
       {{{body}}}
     </div>
  <script src="{{client}}"></script>

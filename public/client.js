@@ -28,11 +28,11 @@ function showpolls(result,container,child,username){
         for(option of options){
             child+="<div class='option'><input type='radio' name='poll' value='"+option.value+"'/><span class='option-val'>"+option.value+"</span></div>";
         }
-        child+="</div><div><button class='btn btn-green' type='submit'>Vote</button> ";
+        child+="</div><div style='display:flex;flex-wrap:wrap;'><button class='btn btn-green' type='submit'>Vote</button> ";
         if(createdBy===username){
             child+="<a href='javascript:console.log();' onclick='deletePoll(event)' class='btn btn-red' data-id='"+id+"'>Delete</a> ";
         }
-        child+="<a class='btn btn-blue' href='javascript:console.log();' data-results='"+JSON.stringify(options)+"' data-title='"+question+"' type='reset' onclick='showresult(event)'>Show Result</a>";
+        child+="<a class='btn btn-blue' href='javascript:console.log();' data-results='"+JSON.stringify(options)+"' data-title='"+question+"' type='reset' onclick='showresult(event)'>Show Result</a><a class='btn btn-black' href='javascript:console.log();' onclick='sharing(event)'>🔗 share</a>";
         child+="</div></form></div>";
     });
     container.innerHTML=child;
@@ -51,6 +51,10 @@ function deletePoll(e){
 }
 function signout(){
     window.location.replace('/signout');
+}
+function showcreate(e){
+    document.querySelector(".create-polls").style.display="block";
+    document.querySelector(".create-polls #question-to-submit").focus();
 }
 function createPoll(){
     if(document.querySelector("#question-to-submit").value.endsWith("?")){
@@ -152,12 +156,12 @@ document.querySelectorAll("#sign-up-form input").forEach((elem)=>{
 });
 });
 document.querySelector("#hamburger-menu-btn").addEventListener("click",(e)=>{
-    if(document.querySelector(".hamburger-menu")){       
+    if(document.querySelector(".hamburger-menu").style.display=="block"){       
     document.querySelector(".main-content").style.margin="100px 0px 0px 0px";
-    document.querySelector(".hamburger-menu").className="hamburger-menu-hidden";
+    document.querySelector(".hamburger-menu").style.display="none";
     }
     else{
-    document.querySelector(".hamburger-menu-hidden").className="hamburger-menu";
+    document.querySelector(".hamburger-menu").style.display="block";
     document.querySelector(".main-content").style.margin="100px 0px 0px 200px";
     }
 });

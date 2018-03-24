@@ -35,9 +35,9 @@ app.get('/', function (req, res) {
     mongoapi.mongoExec(["polls"],(collectn)=>{
         collectn.find({}).sort({ "totalvotes": -1 }).toArray((err, result) => {            
             if(req.session&&req.session.auth&&req.session.auth.userid){
-                res.render('index',{title:'Poll-in: The Voting App',username:req.session.auth.username,userid:req.session.auth.userid,polls:result,loggedout:false,style:"style.css",client:"client.js",usersc:"user.js"});
+                res.render('index',{title:'Poll-in: The Voting App',username:req.session.auth.username,userid:req.session.auth.userid,polls:result,loggedout:false,style:"style.css",client:"client.js",usersc:"user.js",userpage:false});
             }else{
-                    res.render('index',{title:'Poll-in: The Voting App',username:null,polls:result,loggedout:true,style:"style.css",client:"client.js",usersc:"user.js"});
+                    res.render('index',{title:'Poll-in: The Voting App',username:null,polls:result,loggedout:true,style:"style.css",client:"client.js",usersc:"user.js",userpage:false});
             }
         });
     })
@@ -51,6 +51,18 @@ app.get('/poll/:id',(req,res)=>{
                 res.render('poll',{title:'Poll-in: The Voting App',username:req.session.auth.username,userid:req.session.auth.userid,poll:doc,loggedout:false,style:"../style.css",client:"../client.js",usersc:"../user.js"});
             }else{
                     res.render('poll',{title:'Poll-in: The Voting App',username:null,poll:doc,loggedout:true,style:"../style.css",client:"../client.js",usersc:"../user.js"});
+            }
+        });
+    });
+});
+app.get('/user/:username',(req,res)=>{
+    mongoapi.mongoExec(["polls"],(collectn)=>{ 
+        collectn.find({"createdBy":req.params.username}).toArray((err,results)=>{
+            if(err) throw err;
+            if(req.session&&req.session.auth&&req.session.auth.userid){
+                res.render('index',{title:'Poll-in: The Voting App',username:req.session.auth.username,userid:req.session.auth.userid,polls:results.reverse(),loggedout:false,style:"../style.css",client:"../client.js",usersc:"../user.js",userpage:true,pageuser:req.params.username});
+            }else{
+                    res.render('index',{title:'Poll-in: The Voting App',username:null,polls:results.reverse(),loggedout:true,style:"../style.css",client:"../client.js",usersc:"../user.js",userpage:true,pageuser:req.params.username});
             }
         });
     });
@@ -108,7 +120,7 @@ app.post('/create-poll',(req,res)=>{
         res.status(403).send("Unauthorised Access");
     }
 });
-app.get("/user/:userid",(req,res)=>{
+app.get("/u/:userid",(req,res)=>{
     mongoapi.getUserPage(req.params.userid,res);
 });
 app.get("/deletepoll",(req,res)=>{

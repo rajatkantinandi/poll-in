@@ -1,22 +1,23 @@
-<div class='poll' id='{{poll/_id}}'>
-  <i style='color:#666'>👤 {{poll/createdBy}}</i> &nbsp; <i style='color:#558'>@{{poll/at}}</i>
-  <hr/>
-  <b>{{poll/question}}</b>
-  <form action='/vote' method='post'>
-    <div class='options'>
-      <input type='hidden' name='id' value='{{poll/_id}}'/>
-      {{#each poll/options}}
-        <div class='option'>
-          <input type='radio' name='poll' value='{{value}}'/><span class='option-val'>{{value}}</span>
-        </div>
-      {{/each}}
-    </div>
-    <div>
-      <button class='btn btn-green' type='submit'>Vote</button>
-      {{#if (eq username poll/createdBy)}}
-      <a href="javascript:console.log('deleting..');" onclick='deletePoll(event)' class='btn btn-red' data-id='{{_id}}'>Delete</a>
-      {{/if}}
-      <a class='btn btn-blue' href="javascript:console.log('Result');" data-results='{{stringify poll/options}}' data-title='{{poll/question}}' type='reset' onclick='showresult(event)'>Show Result</a>
-    </div>
-  </form>
-</div>
+  <div class='poll' id='{{poll/_id}}'>
+    <div style="display:flex;flex-wrap:wrap;"><i style='color:#666'>👤 {{poll/createdBy}}</i> &nbsp; <i style='color:#558'>@{{poll/at}}</i></div>
+    <hr/>
+    <b>{{poll/question}}</b>
+    <form action='/vote' method='post'>
+      <div class='options'>
+        <input type='hidden' name='id' value='{{poll/_id}}'/>
+        {{#each poll/options}}
+          <div class='option'>
+            <input type='radio' name='poll' value='{{value}}'/><span class='option-val'>{{value}}</span>
+          </div>
+        {{/each}}
+      </div>
+      <div style="display:flex;flex-wrap:wrap;">
+        <button class='btn btn-green' type='submit'>Vote</button>
+        {{#if (eq username poll/createdBy)}}
+        <a href="javascript:console.log('deleting..');" onclick='deletePoll(event)' class='btn btn-red' data-id='{{_id}}'>Delete</a>
+        {{/if}}
+        <a class='btn btn-blue' href="javascript:console.log('Result');" data-results='{{stringify poll/options}}' data-title='{{poll/question}}' type='reset' onclick='showresult(event)'>Result</a>
+        <a class="btn btn-black" href="javascript:console.log('Sharing');" onclick="sharing(event)">🔗 share</a>
+      </div>
+    </form>
+  </div>
