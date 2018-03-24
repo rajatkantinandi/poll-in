@@ -1,0 +1,41 @@
+      {{#if loggedout}}
+      {{else}}
+      <div class="create-polls">
+          <h3>Create a Poll</h3>
+          <form action="/create-poll" method="POST" onsubmit="return createPoll()">
+            <input type="text" class="input-txt" name="question" id="question-to-submit" placeholder="Enter the question" style="width:80%;"/><br>
+            <input type="text" class="input-txt" name="option1" placeholder="Enter the option1"/> &nbsp;
+            <input type="text" class="input-txt" name="option2" placeholder="Enter the option2"/><br>
+            <input type="text" class="input-txt" name="option3" placeholder="Enter the option3"/> &nbsp;
+            <input type="text" class="input-txt" name="option4" placeholder="Enter the option4"/><br>
+            <center><button type="submit" class="btn btn-blue" style="width:60%">Publish Poll</button></center>
+          </form>
+      </div>
+      {{/if}}
+      <div class="polls" id="trending-polls">
+        <h2>Popular Polls</h2>
+        {{#each polls}}
+          <div class='poll' id='{{_id}}'>
+            <i style='color:#666'>👤 {{createdBy}}</i> &nbsp; <i style='color:#558'>@{{at}}</i>
+            <hr/>
+            <b>{{question}}</b>
+            <form action='/vote' method='post'>
+              <div class='options'>
+                <input type='hidden' name='id' value='{{_id}}'/>
+                {{#each options}}
+                  <div class='option'>
+                    <input type='radio' name='poll' value='{{value}}'/><span class='option-val'>{{value}}</span>
+                  </div>
+                {{/each}}
+              </div>
+              <div>
+                <button class='btn btn-green' type='submit'>Vote</button>
+                {{#if (eq ../username createdBy)}}
+                <a href="javascript:console.log('deleting..');" onclick='deletePoll(event)' class='btn btn-red' data-id='{{_id}}'>Delete</a>
+                {{/if}}
+                <a class='btn btn-blue' href="javascript:console.log('Result');" data-results='{{stringify options}}' data-title='{{question}}' type='reset' onclick='showresult(event)'>Show Result</a>
+              </div>
+            </form>
+          </div>
+        {{/each}}
+      </div>

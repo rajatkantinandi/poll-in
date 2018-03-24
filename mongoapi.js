@@ -44,7 +44,7 @@ function login(req, res, user, pass) {
             else {
                 let passString = hash(pass, result.salt);
                 if (passString == result.password) {
-                    req.session.auth = { userid: result["_id"] };
+                    req.session.auth = { userid: result["_id"] ,username:user};
                     res.status(200).redirect("/");
                 }
                 else {
@@ -91,6 +91,7 @@ function createPoll(obj, res) {
                 if(err) throw err;
                 else if(result){
                     obj.createdBy=result.username;
+                    obj.at=new Date().toLocaleString();
                     collectn.insertOne(obj, (err) => {
                         if (err) throw err;
                         else res.status(200).redirect("/");
@@ -174,5 +175,6 @@ module.exports = {
     "createPoll": createPoll,
     "showuser":showuser,
     "getUserPage":getUserPage ,
-    "deletePoll":deletePoll
+    "deletePoll":deletePoll,
+    "mongoExec":mongoExec
 };
