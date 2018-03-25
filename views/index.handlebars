@@ -25,7 +25,7 @@
             <a href="javascript:console.log('deleting..');" onclick='deletePoll(event)' class='btn btn-red' data-id='{{_id}}'>Delete</a>
             {{/if}}
             <a class='btn btn-blue' href="javascript:console.log('Result');" data-results='{{stringify options}}' data-title='{{question}}' type='reset' onclick='showresult(event)'>Result</a>
-             <a class="btn btn-black" href="javascript:console.log('Sharing');" onclick="sharing(event)">🔗 share</a>
+             <a class="btn btn-black" href="javascript:console.log('Sharing');" onclick="sharing(event)" data-url="poll/{{_id}}">🔗 share</a>
           </div>
         </form>
       </div>

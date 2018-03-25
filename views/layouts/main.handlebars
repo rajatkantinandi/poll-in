@@ -63,6 +63,15 @@
             <center><div class="loader loader10"></div></center>
           </div>
       </div>
+      <div id="shareui" class="hidden">
+        <a href="javascript:console.log('closed');" class="close-btn">X</a>
+        <h3>Share With your Friends</h3>
+        <input type="url" value="" id="shareurl" size="70"/>
+        <div class="share-btns" style="align-self:center;">
+          <button class="btn btn-black" id="copy-btn-share" onclick="copyurl(event)">📋 Copy</button> <br/>
+          <a class="btn btn-blue" id="share-on-twitter" href="" target="_blank">Share on Twitter</a>
+        </div>
+      </div>
     </div>
     <div class="main-content" {{#if loggedout}}style="margin-left:0px;"{{/if}}>
         {{#if loggedout}} 

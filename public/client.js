@@ -32,7 +32,7 @@ function showpolls(result,container,child,username){
         if(createdBy===username){
             child+="<a href='javascript:console.log();' onclick='deletePoll(event)' class='btn btn-red' data-id='"+id+"'>Delete</a> ";
         }
-        child+="<a class='btn btn-blue' href='javascript:console.log();' data-results='"+JSON.stringify(options)+"' data-title='"+question+"' type='reset' onclick='showresult(event)'>Show Result</a><a class='btn btn-black' href='javascript:console.log();' onclick='sharing(event)'>🔗 share</a>";
+        child+="<a class='btn btn-blue' href='javascript:console.log();' data-results='"+JSON.stringify(options)+"' data-title='"+question+"' type='reset' onclick='showresult(event)'>Show Result</a><a class='btn btn-black' href='javascript:console.log();' onclick='sharing(event)' data-url='poll/"+id+"'>🔗 share</a>";
         child+="</div></form></div>";
     });
     container.innerHTML=child;
@@ -187,4 +187,22 @@ function showresult(e){
       chart.draw(data, options);
     }
         show("chart");
+}
+function sharing(e){
+    let location=window.location.href;
+    document.querySelector("#shareui #shareurl").value=location+e.target.getAttribute("data-url");
+    document.querySelector("#shareui #share-on-twitter").href="https://twitter.com/intent/tweet?hashtags=poll_in&related=poll-in&text=Poll-in Poll >> %0ACast your vote here.. %0A"+location+e.target.getAttribute("data-url");
+    show("shareui");
+}
+function copyurl(e){
+    let cpyarea = document.querySelector('#shareurl');  
+  cpyarea.select();
+
+  try {  
+    if(document.execCommand('copy')){
+        document.querySelector("#copy-btn-share").innerHTML="✅ Copied!!";
+    }
+  } catch(err) {  
+    console.log('Oops, unable to copy');  
+  }  
 }
