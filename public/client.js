@@ -189,9 +189,10 @@ function showresult(e){
         show("chart");
 }
 function sharing(e){
-    let location=window.location.href;
+    let location="http://"+window.location.href.split("/")[2]+"/";
     document.querySelector("#shareui #shareurl").value=location+e.target.getAttribute("data-url");
     document.querySelector("#shareui #share-on-twitter").href="https://twitter.com/intent/tweet?hashtags=poll_in&related=poll-in&text=Poll-in Poll >> %0ACast your vote here.. %0A"+location+e.target.getAttribute("data-url");
+    document.querySelector("#shareui #copy-btn-share").innerHTML="📋 Copy";
     show("shareui");
 }
 function copyurl(e){
