@@ -33,7 +33,7 @@ function showpolls(result,container,child,username){
             child+="<a href='javascript:console.log();' onclick='deletePoll(event)' class='btn btn-red' data-id='"+id+"'>Delete</a> ";
         }
         child+="<a class='btn btn-green' href='javascript:console.log();' id='add-option-btn' onclick='addOptnDialog(event)' data-url='/update-poll?id="+id+"' data-id='"+id+"'>Add Option</a>";
-        child+="<a class='btn btn-blue' href='javascript:console.log();' data-results='"+JSON.stringify(options)+"' data-title='"+question+"' type='reset' onclick='showresult(event)'>Show Result</a><a class='btn btn-black' href='javascript:console.log();' onclick='sharing(event)' data-url='poll/"+id+"'>🔗 share</a>";
+        child+="<a class='btn btn-blue' href='javascript:console.log();' data-results='"+JSON.stringify(options)+"' data-title='"+question+"' type='reset' onclick='showresult(event)'>Show Result</a><a class='btn btn-black' href='javascript:console.log();' onclick='sharing(event)' data-url='poll/"+id+"' data-question='"+question+"'>🔗 share</a>";
         child+="</div></form></div>";
     });
     container.innerHTML=child;
@@ -195,7 +195,7 @@ function showresult(e){
 function sharing(e){
     let location=window.location.href.split("/")[0]+"//"+window.location.href.split("/")[2]+"/";
     document.querySelector("#shareui #shareurl").value=location+e.target.getAttribute("data-url");
-    document.querySelector("#shareui #share-on-twitter").href="https://twitter.com/intent/tweet?hashtags=poll_in&related=poll-in&text=Poll-in Poll >> %0ACast your vote here.. %0A"+location+e.target.getAttribute("data-url");
+    document.querySelector("#shareui #share-on-twitter").href="https://twitter.com/intent/tweet?hashtags=poll_in&related=poll-in&text=Poll-in Poll >>%0A"+e.target.getAttribute("data-question")+" %0ACast your vote here.. %0A"+location+e.target.getAttribute("data-url");
     document.querySelector("#shareui #copy-btn-share").innerHTML="📋 Copy";
     show("shareui");
 }

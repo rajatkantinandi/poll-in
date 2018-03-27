@@ -22,7 +22,7 @@
           <a class="btn btn-green" href="javascript:console.log('addnew');" id="add-option-btn" onclick="addOptnDialog(event)" data-url='/update-poll?id={{_id}}' data-id='{{_id}}'>Add Option</a>
         {{/if}}
         <a class='btn btn-blue' href="javascript:console.log('Result');" data-results='{{stringify poll/options}}' data-title='{{poll/question}}' onclick='showresult(event)'>Result</a>
-        <a class="btn btn-black" href="javascript:console.log('Sharing');" onclick="sharing(event)" data-url="poll/{{poll/_id}}">🔗 share</a>
+        <a class="btn btn-black" href="javascript:console.log('Sharing');" onclick="sharing(event)" data-url="poll/{{poll/_id}}" data-question="{{poll/question}}">🔗 share</a>
       </div>
     </form>
   </div>
