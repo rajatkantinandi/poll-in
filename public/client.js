@@ -228,6 +228,7 @@ function addOptnDialog(e){
     document.querySelector("#addoptnui .btn-green").setAttribute("data-id",e.target.getAttribute("data-id"));
     document.querySelector("#addoptnui #add-optn-input").innerHTML="";
     document.querySelector("#addoptnui .btn-green").innerHTML="Add option";
+    document.querySelector("#addoptnui #add-optn-input").value="";
     show("addoptnui");
     document.querySelector("#addoptnui #add-optn-input").focus();
 }
