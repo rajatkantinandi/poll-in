@@ -32,6 +32,7 @@ function showpolls(result,container,child,username){
         if(createdBy===username){
             child+="<a href='javascript:console.log();' onclick='deletePoll(event)' class='btn btn-red' data-id='"+id+"'>Delete</a> ";
         }
+        child+="<a class='btn btn-green' href='javascript:console.log();' id='add-option-btn' onclick='addOptnDialog(event)' data-url='/update-poll?id="+id+"' data-id='"+id+"'>Add Option</a>";
         child+="<a class='btn btn-blue' href='javascript:console.log();' data-results='"+JSON.stringify(options)+"' data-title='"+question+"' type='reset' onclick='showresult(event)'>Show Result</a><a class='btn btn-black' href='javascript:console.log();' onclick='sharing(event)' data-url='poll/"+id+"'>🔗 share</a>";
         child+="</div></form></div>";
     });
@@ -87,11 +88,14 @@ document.querySelectorAll(".close-btn").forEach((elem)=>{
     document.querySelector(".bg-layer").style.visibility="hidden";
 })
 });
-document.querySelector(".bg-layer").addEventListener("click",(e)=>{
+function hideall(){
     document.querySelectorAll(".qvisible").forEach((elem)=>{
             elem.className="hidden";
     });
-    e.target.style.visibility="hidden";
+    document.querySelector(".bg-layer").style.visibility="hidden";
+}
+document.querySelector(".bg-layer").addEventListener("click",(e)=>{
+    hideall();
 });
 function ajaxreq(method,url,callback1,callback2){
     let xhttp = new XMLHttpRequest();
@@ -189,7 +193,7 @@ function showresult(e){
         show("chart");
 }
 function sharing(e){
-    let location="http://"+window.location.href.split("/")[2]+"/";
+    let location=window.location.href.split("/")[0]+"//"+window.location.href.split("/")[2]+"/";
     document.querySelector("#shareui #shareurl").value=location+e.target.getAttribute("data-url");
     document.querySelector("#shareui #share-on-twitter").href="https://twitter.com/intent/tweet?hashtags=poll_in&related=poll-in&text=Poll-in Poll >> %0ACast your vote here.. %0A"+location+e.target.getAttribute("data-url");
     document.querySelector("#shareui #copy-btn-share").innerHTML="📋 Copy";
@@ -206,4 +210,40 @@ function copyurl(e){
   } catch(err) {  
     console.log('Oops, unable to copy');  
   }  
+}
+function addOptn(e){
+    let optionsToSubmit=document.querySelector(".create-polls .optionsToSubmit").innerHTML;
+    let numOfOptions=optionsToSubmit.match(/<input/g).length;
+    let elem=document.createElement("input");
+    elem.type="text";
+    elem.className="input-txt";
+    elem.name="option"+(numOfOptions+1);
+    elem.placeholder="Enter the option"+(numOfOptions+1);
+    document.querySelector(".create-polls .optionsToSubmit").appendChild(elem);
+    document.getElementById("numOfOptions").value=numOfOptions+1;
+}
+
+function addOptnDialog(e){
+    document.querySelector("#addoptnui .btn-green").setAttribute("data-url",e.target.getAttribute("data-url"));
+    document.querySelector("#addoptnui .btn-green").setAttribute("data-id",e.target.getAttribute("data-id"));
+    document.querySelector("#addoptnui #add-optn-input").innerHTML="";
+    document.querySelector("#addoptnui .btn-green").innerHTML="Add option";
+    show("addoptnui");
+    document.querySelector("#addoptnui #add-optn-input").focus();
+}
+function addOptnToDB(e){
+    document.querySelector("#addoptnui .btn-green").innerHTML="Addding...";
+    ajaxreq("GET",e.target.getAttribute("data-url")+"&option="+document.querySelector("#addoptnui #add-optn-input").value,(result)=>{
+        document.querySelector("#addoptnui .btn-green").innerHTML="✅ Option Added";
+        let optionselem=document.getElementById(e.target.getAttribute("data-id")).querySelector(".options");
+        let optionsHtml=optionselem.innerHTML;
+        optionsHtml+=`<div class='option'>
+        <input type='radio' name='poll' value='${document.querySelector("#addoptnui #add-optn-input").value}'/><span class='option-val'>${document.querySelector("#addoptnui #add-optn-input").value}</span>
+      </div>`;
+      optionselem.innerHTML=optionsHtml;
+      let updatedResult=JSON.parse(document.getElementById(e.target.getAttribute("data-id")).querySelector(".btn-blue").getAttribute("data-results"));
+      updatedResult.push({"value":document.querySelector("#addoptnui #add-optn-input").value,"votes":1});
+      document.getElementById(e.target.getAttribute("data-id")).querySelector(".btn-blue").setAttribute("data-results",JSON.stringify(updatedResult));
+      setTimeout(hideall,1000);
+    },()=>{alert("Error in adding data..")});
 }

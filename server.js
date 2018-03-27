@@ -48,9 +48,9 @@ app.get('/poll/:id',(req,res)=>{
         collectn.findOne({"_id":o_id},(err,doc)=>{
             if(err) throw err;
             if(req.session&&req.session.auth&&req.session.auth.userid){
-                res.render('poll',{title:'Poll-in: The Voting App',username:req.session.auth.username,userid:req.session.auth.userid,poll:doc,loggedout:false,style:"../style.css",client:"../client.js",usersc:"../user.js"});
+                res.render('poll',{title:'Poll-in: '+doc.question,username:req.session.auth.username,userid:req.session.auth.userid,poll:doc,loggedout:false,style:"../style.css",client:"../client.js",usersc:"../user.js"});
             }else{
-                    res.render('poll',{title:'Poll-in: The Voting App',username:null,poll:doc,loggedout:true,style:"../style.css",client:"../client.js",usersc:"../user.js"});
+                    res.render('poll',{title:'Poll-in: '+doc.question,username:null,poll:doc,loggedout:true,style:"../style.css",client:"../client.js",usersc:"../user.js"});
             }
         });
     });
@@ -102,12 +102,12 @@ app.post('/vote',(req,res)=>{
 });
 app.post('/create-poll',(req,res)=>{
     let question=req.body.question;
+    let numOfOptions=req.body.numOfOptions;
     if(req.session&&req.session.auth&&req.session.auth.userid){
     let options=[];
-    options.push({"value":req.body.option1,"votes":0});
-    options.push({"value":req.body.option2,"votes":0});
-    options.push({"value":req.body.option3,"votes":0});
-    options.push({"value":req.body.option4,"votes":0});
+    for(let i=1;i<=numOfOptions;i++){       
+    options.push({"value":req.body["option"+i],"votes":0});
+    }
     let obj={
         "question":question,
         "options":options,
@@ -128,6 +128,16 @@ app.get("/deletepoll",(req,res)=>{
     let pollid=req.query.id;
     console.log(pollid+"\n"+userid);
     mongoapi.deletePoll(userid,pollid,res);
+});
+app.get("/update-poll",(req,res)=>{
+    if(req.session&&req.session.auth&&req.session.auth.userid){
+        let pollid=req.query.id;
+        let option=req.query.option;
+        mongoapi.updatePoll(pollid,option,"add",res);
+    }
+    else{
+        res.status(403).send("Access Denied");
+    }
 });
 app.listen(process.env.PORT,(err)=>{
     if(err) throw err;

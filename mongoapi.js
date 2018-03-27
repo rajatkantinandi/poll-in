@@ -162,6 +162,15 @@ function deletePoll(userid,pollid,res){
         });
     });
 }
+function updatePoll(pollid,option,method,res){
+    if(method=="add"){
+        mongoExec(["polls"],(collectn)=>{
+            let o_id = new require('mongodb').ObjectID(pollid);
+            collectn.updateOne({"_id":o_id},{ $push: { "options": {"value":option,"votes":1} } ,$inc:{"totalvotes":1}});
+            res.status(200).send("Success!!");
+        });
+    }
+}
 function hash(input, salt) {
     let hashed = crypto.pbkdf2Sync(input, salt, 500, 10, 'md5');
     return hashed.toString('hex');
@@ -176,5 +185,6 @@ module.exports = {
     "showuser":showuser,
     "getUserPage":getUserPage ,
     "deletePoll":deletePoll,
-    "mongoExec":mongoExec
+    "mongoExec":mongoExec,
+    "updatePoll":updatePoll
 };

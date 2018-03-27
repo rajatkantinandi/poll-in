@@ -72,6 +72,12 @@
           <a class="btn btn-blue" id="share-on-twitter" href="" target="_blank">Share on Twitter</a>
         </div>
       </div>
+      <div id="addoptnui" class="hidden">
+        <a href="javascript:console.log('closed');" class="close-btn">X</a>
+        <h3>Add a new option to the poll</h3>
+        <input type="url" value="" id="add-optn-input" size="30" placeholder="New Option" class="input-txt"/>
+        <button class="btn btn-green" data-url="" onclick="addOptnToDB(event)">Add Option</button>
+      </div>
     </div>
     <div class="main-content" {{#if loggedout}}style="margin-left:0px;"{{/if}}>
         {{#if loggedout}} 
@@ -81,15 +87,17 @@
         <form action="/create-poll" method="POST" onsubmit="return createPoll()">
           <input type="text" class="input-txt" name="question" id="question-to-submit" placeholder="Enter the question" style="width:80%;"
           />
+          <input type="hidden" name="numOfOptions" id="numOfOptions" value="2"/>
           <br>
-          <input type="text" class="input-txt" name="option1" placeholder="Enter the option1" /> &nbsp;
-          <input type="text" class="input-txt" name="option2" placeholder="Enter the option2" />
-          <br>
-          <input type="text" class="input-txt" name="option3" placeholder="Enter the option3" /> &nbsp;
-          <input type="text" class="input-txt" name="option4" placeholder="Enter the option4" />
-          <br>
+          <div class="optionsToSubmit">
+          <input type="text" class="input-txt" name="option1" placeholder="Enter the option1"/>
+          <input type="text" class="input-txt" name="option2" placeholder="Enter the option2"/>
+          </div>
+          <br/>
           <center>
-            <button type="submit" class="btn btn-blue" style="width:60%">Publish Poll</button>
+            <a class="btn btn-green" href="javascript:console.log('addnew');" id="add-option-btn" style="width:60%;display:block;" onclick="addOptn(event)">Add Option</a>
+            <button type="submit" class="btn btn-blue" style="width:45%">Publish Poll</button>
+            <button type="reset" class="btn btn-black" style="width:45%">Clear</button>
           </center>
         </form>
       </div>
