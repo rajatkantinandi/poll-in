@@ -10,7 +10,7 @@
         <div style="display:flex;flex-wrap:wrap;"><i style='color:#666'>👤 <a href="/user/{{createdBy}}"+>{{createdBy}}</a></i> &nbsp; <i style='color:#558'>@{{at}}</i></div>
         <hr/>
         <b>{{question}}</b>
-        <form action='/vote' method='post'>
+        <form action='/vote' method='post' onsubmit="return voteme(event)">
           <div class='options'>
             <input type='hidden' name='id' value='{{_id}}'/>
             {{#each options}}
@@ -26,7 +26,7 @@
             {{/if}}
             {{#if ../loggedout}}
             {{else}}
-              <a class="btn btn-green" href="javascript:console.log('addnew');" id="add-option-btn" onclick="addOptnDialog(event)" data-url='/update-poll?id={{_id}}' data-id='{{_id}}'>Add Option</a>
+              <a class="btn btn-green" href="javascript:console.log('addnew');" id="add-option-btn" onclick="addOptnDialog(event)" data-url='/update-poll' data-id='{{_id}}'>Add Option</a>
             {{/if}}
             <a class='btn btn-blue' href="javascript:console.log('Result');" data-results='{{stringify options}}' data-title='{{question}}' onclick='showresult(event)'>Result</a>
              <a class="btn btn-black" href="javascript:console.log('Sharing');" onclick="sharing(event)" data-url="poll/{{_id}}"  data-question="{{question}}">🔗 share</a>

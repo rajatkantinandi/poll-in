@@ -7,7 +7,7 @@ else{
 auth_user=null;
 }
 function showtrending(container,username){
-    ajaxreq("get","/trending-polls",(result)=>{
+    ajaxreq("get","/trending-polls",{},(result)=>{
         document.querySelector(".loader-bg").style.display="none";
         let child="<h3>Popular Polls</h3>";
         result=JSON.parse(result);
@@ -23,7 +23,7 @@ function showpolls(result,container,child,username){
         let createdBy=item.createdBy;
         let id=item["_id"];
         child+="<div class='poll' id='"+id+"'><i style='color:#666'>👤 "+createdBy+"</i> &nbsp; <i style='color:#558'>@"+item.at+"</i><hr/><b>"+question+"</b>";
-        child+="<form action='/vote' method='post'><div class='options'>";
+        child+="<form action='/vote' method='post'  onsubmit='return voteme(event)'><div class='options'>";
         child+="<input type='hidden' name='id' value='"+id+"'/>";
         for(option of options){
             child+="<div class='option'><input type='radio' name='poll' value='"+option.value+"'/><span class='option-val'>"+option.value+"</span></div>";
@@ -32,7 +32,7 @@ function showpolls(result,container,child,username){
         if(createdBy===username){
             child+="<a href='javascript:console.log();' onclick='deletePoll(event)' class='btn btn-red' data-id='"+id+"'>Delete</a> ";
         }
-        child+="<a class='btn btn-green' href='javascript:console.log();' id='add-option-btn' onclick='addOptnDialog(event)' data-url='/update-poll?id="+id+"' data-id='"+id+"'>Add Option</a>";
+        child+="<a class='btn btn-green' href='javascript:console.log();' id='add-option-btn' onclick='addOptnDialog(event)' data-url='/update-poll' data-id='"+id+"'>Add Option</a>";
         child+="<a class='btn btn-blue' href='javascript:console.log();' data-results='"+JSON.stringify(options)+"' data-title='"+question+"' type='reset' onclick='showresult(event)'>Show Result</a><a class='btn btn-black' href='javascript:console.log();' onclick='sharing(event)' data-url='poll/"+id+"' data-question='"+question+"'>🔗 share</a>";
         child+="</div></form></div>";
     });
@@ -43,11 +43,11 @@ function deletePoll(e){
     let r = confirm("Are you sure you want to delete!");
     if (r == true) {
         e.target.innerHTML="Deleting...";
-        ajaxreq("get","/deletepoll?id="+poll_id+"&userid="+auth_user,(result)=>{
+        ajaxreq("get","/deletepoll?id="+poll_id+"&userid="+auth_user,{},(result)=>{
             let delem=document.getElementById(poll_id);
             delem.parentElement.removeChild(delem);
             console.log("deleted:"+poll_id);
-        },()=>{});
+        },()=>{console.log("Unauthorised Access");});
     }
 }
 function signout(){
@@ -97,7 +97,7 @@ function hideall(){
 document.querySelector(".bg-layer").addEventListener("click",(e)=>{
     hideall();
 });
-function ajaxreq(method,url,callback1,callback2){
+function ajaxreq(method,url,data,callback1,callback2){
     let xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
@@ -108,7 +108,21 @@ function ajaxreq(method,url,callback1,callback2){
     }
   };
   xhttp.open(method, url, true);
-  xhttp.send();
+  if(method.toUpperCase()=="POST"){
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    let dataToSend="";
+    for (var key in data) {
+        if (data.hasOwnProperty(key)) {
+            dataToSend+=key+"="+data[key]+"&";
+        }
+    }
+    dataToSend=dataToSend.substr(0,dataToSend.length-1);
+    console.log(dataToSend);
+    xhttp.send(dataToSend);
+}
+else if(method.toUpperCase()=="GET"){
+    xhttp.send();
+}
 }
 let useravail=false;
 let passmatch=false;
@@ -131,7 +145,7 @@ document.querySelectorAll("#sign-up-form input").forEach((elem)=>{
         status.innerHTML="";
         if(username!=""){
         status.innerHTML="Checking...";
-        ajaxreq("GET","/checkavailuser/"+username,(result)=>{
+        ajaxreq("GET","/checkavailuser/"+username,{},(result)=>{
         status.innerHTML="✅ Username available";
         status.style.background="#9c9";
         useravail=true;
@@ -169,6 +183,26 @@ document.querySelector("#hamburger-menu-btn").addEventListener("click",(e)=>{
     document.querySelector(".main-content").style.margin="100px 0px 0px 200px";
     }
 });
+function voteme(e){
+    pollid=e.target.querySelector("input[name=id]").value;
+     let poll=e.target.querySelector(".option input:checked").value;
+    console.log("poll-id: "+pollid+", Poll: "+poll);
+    e.target.querySelector(".btn-green").innerHTML="Voting...";
+    ajaxreq("POST","/vote",{"id":pollid,"poll":poll},(result)=>{
+        let results=JSON.parse(e.target.querySelector(".btn-blue").getAttribute("data-results"));
+        results.forEach((elem)=>{
+            if(elem.value==poll){ elem.votes=elem.votes+1; 
+            }
+        });
+        e.target.querySelector(".btn-blue").setAttribute("data-results",JSON.stringify(results));
+        e.target.querySelector(".btn-green").innerHTML="✅ Voted";
+        e.target.querySelector(".btn-green").disabled=true;
+        alert(result);
+    },()=>{
+        console.log("Error");
+    });
+    return false;
+}
 function showresult(e){
     google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(drawChart);
@@ -197,6 +231,7 @@ function sharing(e){
     document.querySelector("#shareui #shareurl").value=location+e.target.getAttribute("data-url");
     document.querySelector("#shareui #share-on-twitter").href="https://twitter.com/intent/tweet?hashtags=poll_in&related=poll-in&text=Poll-in Poll >>%0A"+e.target.getAttribute("data-question")+" %0ACast your vote here.. %0A"+location+e.target.getAttribute("data-url");
     document.querySelector("#shareui #copy-btn-share").innerHTML="📋 Copy";
+    document.querySelector("#share-on-fb").href="https://fb.com/sharer.php?u="+location+e.target.getAttribute("data-url");
     show("shareui");
 }
 function copyurl(e){
@@ -233,8 +268,8 @@ function addOptnDialog(e){
     document.querySelector("#addoptnui #add-optn-input").focus();
 }
 function addOptnToDB(e){
-    document.querySelector("#addoptnui .btn-green").innerHTML="Addding...";
-    ajaxreq("GET",e.target.getAttribute("data-url")+"&option="+document.querySelector("#addoptnui #add-optn-input").value,(result)=>{
+    document.querySelector("#addoptnui .btn-green").innerHTML="Adding...";
+    ajaxreq("GET",e.target.getAttribute("data-url")+"?id="+e.target.getAttribute("data-id")+"&option="+document.querySelector("#addoptnui #add-optn-input").value,{},(result)=>{
         document.querySelector("#addoptnui .btn-green").innerHTML="✅ Option Added";
         let optionselem=document.getElementById(e.target.getAttribute("data-id")).querySelector(".options");
         let optionsHtml=optionselem.innerHTML;

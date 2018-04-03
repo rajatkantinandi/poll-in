@@ -3,7 +3,7 @@
     <div style="display:flex;flex-wrap:wrap;"><i style='color:#666'>👤 <a href="/user/{{poll/createdBy}}"+>{{poll/createdBy}}</a></i> &nbsp; <i style='color:#558'>@{{poll/at}}</i></div>
     <hr/>
     <b>{{poll/question}}</b>
-    <form action='/vote' method='post'>
+    <form action='/vote' method='post' onsubmit="return voteme(event)">
       <div class='options'>
         <input type='hidden' name='id' value='{{poll/_id}}'/>
         {{#each poll/options}}
@@ -19,7 +19,7 @@
         {{/if}}
         {{#if loggedout}}
         {{else}}
-          <a class="btn btn-green" href="javascript:console.log('addnew');" id="add-option-btn" onclick="addOptnDialog(event)" data-url='/update-poll?id={{_id}}' data-id='{{_id}}'>Add Option</a>
+          <a class="btn btn-green" href="javascript:console.log('addnew');" id="add-option-btn" onclick="addOptnDialog(event)" data-url='/update-poll' data-id='{{_id}}'>Add Option</a>
         {{/if}}
         <a class='btn btn-blue' href="javascript:console.log('Result');" data-results='{{stringify poll/options}}' data-title='{{poll/question}}' onclick='showresult(event)'>Result</a>
         <a class="btn btn-black" href="javascript:console.log('Sharing');" onclick="sharing(event)" data-url="poll/{{poll/_id}}" data-question="{{poll/question}}">🔗 share</a>

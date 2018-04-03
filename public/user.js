@@ -1,8 +1,8 @@
 function userpage(e){
     let user_id=e.target.getAttribute('data-userid');
     console.log("loading userpage");
-    document.querySelector(".main-content #trending-polls").innerHTML="<div class='loader loader10'></div>";
-    ajaxreq("GET","/u/"+user_id,(result)=>{
+    document.querySelector(".main-content #trending-polls").innerHTML="<center><div class='loader loader10'></div></center>";
+    ajaxreq("GET","/u/"+user_id,{},(result)=>{
         result=JSON.parse(result);
         let toRender=`<div class='userpage'>
            <h1>${result.username}</h1>

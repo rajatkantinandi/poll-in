@@ -202,6 +202,8 @@ button:disabled{
     border-radius: 10px;
     flex-direction: column;
     max-width: 500px;
+    min-width: 350px;
+    min-height:450px;
 }
 .options{
     padding: 8px 15px;

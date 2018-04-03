@@ -81,7 +81,7 @@ function vote(id, poll, res) {
     mongoExec(["polls"],(collectn)=>{
         let o_id = new require('mongodb').ObjectID(id);
             collectn.updateOne({ "_id": o_id, "options.value": poll }, { $inc: { "totalvotes": 1, "options.$.votes": 1 } });
-            res.status(200).redirect("/");
+            res.status(200).send("voted successfully");
     });
 }
 function createPoll(obj, res) {
