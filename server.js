@@ -7,7 +7,8 @@ const path=require('path');
 const bodyparser=require('body-parser');
 const mongoapi=require('./mongoapi');
 const exphbs  = require('express-handlebars');
- 
+const cors = require('cors');
+app.use(cors()); 
 app.engine('handlebars', exphbs({
     defaultLayout: 'main',
     layoutsDir:path.join(__dirname,"views","layouts"),
