@@ -158,7 +158,7 @@ app.post("/survey",(req,res)=>{
         suggestions:suggestions
     };
     mongoapi.mongoExec(["surveys"],(collectn)=>{
-        collectn.inserOne(survey);
+        collectn.insertOne(survey);
         res.status(200).send("Successfully Submitted!!");
     });
 });
