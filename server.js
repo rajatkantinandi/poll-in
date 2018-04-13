@@ -139,6 +139,29 @@ app.get("/update-poll",(req,res)=>{
         res.status(403).send("Access Denied");
     }
 });
+app.post("/survey",(req,res)=>{
+    //Parameters
+    let name=req.body.name;
+    let email=req.body.email;
+    let age=req.body.age;
+    let source=req.body.source;
+    let recommend=req.body.recommend;
+    let improvement=req.body.improvement;
+    let suggestions=req.body.suggestions;
+    let survey={
+        name:name,
+        email:email,
+        age:age,
+        source:source,
+        recommend:recommend,
+        improvement:improvement,
+        suggestions:suggestions
+    };
+    mongoapi.mongoExec(["surveys"],(collectn)=>{
+        collectn.inserOne(survey);
+        res.status(200).send("Successfully Submitted!!");
+    });
+});
 app.listen(process.env.PORT,(err)=>{
     if(err) throw err;
     console.log("Server started at port "+process.env.PORT);
