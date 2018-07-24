@@ -39,7 +39,7 @@ function login(req, res, user, pass) {
     mongoExec(["users"],(collectn)=>{
         collectn.findOne({ "username": user }, (err, result) => {
             if (!result) {
-                res.status(403).send("Invalid Username!!");
+                res.status(403).json({err:"Invalid Username!!"});
             }
             else {
                 let passString = hash(pass, result.salt);
@@ -48,7 +48,7 @@ function login(req, res, user, pass) {
                     res.status(200).redirect("/");
                 }
                 else {
-                    res.status(403).send("Invalid password!!");
+                    res.status(403).json({err:"Invalid password!!"});
                 }
             }
         });
@@ -64,8 +64,8 @@ function signup(res, user, pass) {
                 res.status(200).send("User " + user + " signed up successfully!!");
             }
             else {
-                res.status(404);
-                res.send("Username exist!!");
+                res.status(401);
+                res.json({err:"Username exist!!"});
             }
         });
     });
