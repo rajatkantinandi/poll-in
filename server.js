@@ -27,6 +27,7 @@ app.set("views", path.join(__dirname, "views/"));
 app.set("view engine", "handlebars");
 app.use(express.static("public"));
 app.use(bodyparser.urlencoded({ extended: false }));
+app.use(express.json());
 app.use(
   session({
     secret: "Number :" + Math.random() * 25,
@@ -135,8 +136,8 @@ app.get("/user/:username", (req, res) => {
   });
 });
 app.post("/signin", (req, res) => {
-  let username = JSON.parse(req.body).username;
-  let password = JSON.parse(req.body).password;
+  let username = req.body.username;
+  let password = req.body.password;
   mongoapi.signin(req, res, username, password);
 });
 app.post("/signup", (req, res) => {
