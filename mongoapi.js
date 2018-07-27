@@ -44,7 +44,7 @@ function login(req, res, user, pass) {
         let passString = hash(pass, result.salt);
         if (passString == result.password) {
           req.session.auth = { userid: result["_id"], username: user };
-          res.status(200).redirect("/");
+          res.status(200).json({ username: user, userid: result["_id"] });
         } else {
           res.status(403).json({ err: "Invalid password!! " + pass });
         }
@@ -82,7 +82,13 @@ function vote(id, poll, res) {
     let o_id = new require("mongodb").ObjectID(id);
     collectn.updateOne(
       { _id: o_id, "options.value": poll },
-      { $inc: { totalvotes: 1, "options.$.votes": 1 } }
+      { $inc: { totalvotes: 1, "options.$.votes": 1 } },
+      (err, result) => {
+        if (err)
+          res
+            .status(404)
+            .json({ err: "Invalid poll id! Not found! Voting Unsuccessful!!" });
+      }
     );
     res.status(200).send("voted successfully");
   });
