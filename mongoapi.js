@@ -39,14 +39,14 @@ function login(req, res, user, pass) {
   mongoExec(["users"], collectn => {
     collectn.findOne({ username: user }, (err, result) => {
       if (!result) {
-        res.status(403).json({ err: "Invalid Username!! " + user });
+        res.status(403).json({ err: "Invalid Username!! " });
       } else {
         let passString = hash(pass, result.salt);
         if (passString == result.password) {
           req.session.auth = { userid: result["_id"], username: user };
           res.status(200).json({ username: user, userid: result["_id"] });
         } else {
-          res.status(403).json({ err: "Invalid password!! " + pass });
+          res.status(403).json({ err: "Invalid password!! " });
         }
       }
     });
