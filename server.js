@@ -32,8 +32,8 @@ app.use(
   session({
     secret: "Number :" + Math.random() * 25,
     cookie: { maxAge: 1000 * 60 * 60 * 24 * 30 },
-    resave: false,
-    saveUninitialized: true
+    resave: true,
+    saveUninitialized: false
   })
 );
 //Routing
