@@ -186,6 +186,24 @@ app.post("/create-poll", (req, res) => {
     res.status(403).send("Unauthorised Access");
   }
 });
+
+app.post("/new-poll", (req, res) => {
+  let question = req.body.question;
+  let userid = req.body.userid;
+  let numOfOptions = req.body.numOfOptions;
+  let options = [];
+  for (let i = 1; i <= numOfOptions; i++) {
+    options.push({ value: req.body["option" + i], votes: 0 });
+  }
+  let obj = {
+    question: question,
+    options: options,
+    createdBy: userid,
+    totalvotes: 0
+  };
+  mongoapi.newPoll(obj, res);
+});
+
 app.get("/u/:userid", (req, res) => {
   mongoapi.getUserPage(req.params.userid, res);
 });

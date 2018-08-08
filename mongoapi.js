@@ -111,6 +111,26 @@ function createPoll(obj, res) {
     });
   });
 }
+
+function newPoll(obj, res) {
+  mongoExec(["polls", "users"], (collectn, collectn2) => {
+    let o_id = new require("mongodb").ObjectID(obj.createdBy);
+    collectn2.findOne({ _id: o_id }, (err, result) => {
+      if (err) throw err;
+      else if (result) {
+        obj.createdBy = result.username;
+        obj.at = new Date().toLocaleString();
+        collectn.insertOne(obj, err => {
+          if (err) throw err;
+          else res.status(200).redirect("/");
+        });
+      } else {
+        res.status(403).send("Unauthorised user!!");
+      }
+    });
+  });
+}
+
 function showuser(id, res) {
   mongoExec(["users"], collectn => {
     let o_id = new require("mongodb").ObjectID(id);
@@ -199,5 +219,6 @@ module.exports = {
   getUserPage: getUserPage,
   deletePoll: deletePoll,
   mongoExec: mongoExec,
-  updatePoll: updatePoll
+  updatePoll: updatePoll,
+  newPoll: newPoll
 };
