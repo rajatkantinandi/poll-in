@@ -237,5 +237,6 @@ module.exports = {
   deletePoll: deletePoll,
   mongoExec: mongoExec,
   updatePoll: updatePoll,
-  newPoll: newPoll
+  newPoll: newPoll,
+  addOption: addOption
 };
