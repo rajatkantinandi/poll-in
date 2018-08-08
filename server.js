@@ -222,6 +222,13 @@ app.get("/update-poll", (req, res) => {
     res.status(403).send("Access Denied");
   }
 });
+
+app.get("/add-option", (req, res) => {
+  let pollid = req.query.id;
+  let option = req.query.option;
+  mongoapi.addOption(pollid, option, "add", res);
+});
+
 app.post("/survey", (req, res) => {
   //Parameters
   let name = req.body.name;
