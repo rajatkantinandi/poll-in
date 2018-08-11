@@ -189,7 +189,7 @@ function getUserProfile(username, res) {
           res.status(200).json(responseToSend);
         });
       } else {
-        res.status(403).send("Unauthorised access");
+        res.status(404).send("User doesn't exist");
       }
     });
   });
