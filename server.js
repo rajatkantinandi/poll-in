@@ -75,7 +75,24 @@ app.get("/poll/:id", (req, res) => {
     let o_id = new require("mongodb").ObjectID(req.params.id);
     collectn.findOne({ _id: o_id }, (err, doc) => {
       if (err) throw err;
-      if (req.session && req.session.auth && req.session.auth.userid) {
+      if (doc == null) {
+        res.render("poll", {
+          title: "Poll-in: " + "Not found !!",
+          username: null,
+          poll: {
+            _id: "",
+            question: "404 Not Found !!",
+            options: [],
+            createdBy: "",
+            totalvotes: 0,
+            at: ""
+          },
+          loggedout: true,
+          style: "../style.css",
+          client: "../client.js",
+          usersc: "../user.js"
+        });
+      } else if (req.session && req.session.auth && req.session.auth.userid) {
         res.render("poll", {
           title: "Poll-in: " + doc.question,
           username: req.session.auth.username,
@@ -106,7 +123,9 @@ app.get("/get-poll/:id", (req, res) => {
     let o_id = new require("mongodb").ObjectID(req.params.id);
     collectn.findOne({ _id: o_id }, (err, doc) => {
       if (err) throw err;
-      res.status(200).json(doc);
+      else if (doc == null) {
+        res.status(404).json({ err: "Poll not found !!" });
+      } else res.status(200).json(doc);
     });
   });
 });
