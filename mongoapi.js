@@ -171,6 +171,30 @@ function getUserPage(userid, res) {
   });
 }
 
+function getUserProfile(username, res) {
+  mongoExec(["users", "polls"], (collectn, collectn2) => {
+    collectn.findOne({ username: username }, (err, result) => {
+      if (err) throw err;
+      else if (result) {
+        let username = result.username;
+        let responseToSend = {
+          username: username,
+          polls: []
+        };
+        collectn2.find({ createdBy: username }).toArray((err, results) => {
+          if (err) throw err;
+          results.forEach(element => {
+            responseToSend.polls.push(element);
+          });
+          res.status(200).json(responseToSend);
+        });
+      } else {
+        res.status(403).send("Unauthorised access");
+      }
+    });
+  });
+}
+
 function deletePoll(userid, pollid, res) {
   mongoExec(["polls", "users"], (collectn, collectn2) => {
     let o_id = new require("mongodb").ObjectID(userid);
@@ -234,6 +258,7 @@ module.exports = {
   createPoll: createPoll,
   showuser: showuser,
   getUserPage: getUserPage,
+  getUserProfile: getUserProfile,
   deletePoll: deletePoll,
   mongoExec: mongoExec,
   updatePoll: updatePoll,

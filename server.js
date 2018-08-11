@@ -100,6 +100,16 @@ app.get("/poll/:id", (req, res) => {
     });
   });
 });
+
+app.get("/get-poll/:id", (req, res) => {
+  mongoapi.mongoExec(["polls"], collectn => {
+    let o_id = new require("mongodb").ObjectID(req.params.id);
+    collectn.findOne({ _id: o_id }, (err, doc) => {
+      if (err) throw err;
+      res.status(200).json(doc);
+    });
+  });
+});
 app.get("/user/:username", (req, res) => {
   mongoapi.mongoExec(["polls"], collectn => {
     collectn
@@ -206,6 +216,9 @@ app.post("/new-poll", (req, res) => {
 
 app.get("/u/:userid", (req, res) => {
   mongoapi.getUserPage(req.params.userid, res);
+});
+app.get("/profile/:username", (req, res) => {
+  mongoapi.getUserProfile(req.params.username, res);
 });
 app.get("/deletepoll", (req, res) => {
   let userid = req.query.userid;
