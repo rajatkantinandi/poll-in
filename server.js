@@ -2,6 +2,7 @@
 require("dotenv/config");
 const express = require("express");
 const session = require("express-session");
+const compression = require("compression");
 const app = express();
 const path = require("path");
 const bodyparser = require("body-parser");
@@ -9,6 +10,7 @@ const mongoapi = require("./mongoapi");
 const exphbs = require("express-handlebars");
 const cors = require("cors");
 app.use(cors());
+app.use(compression());
 app.engine(
   "handlebars",
   exphbs({

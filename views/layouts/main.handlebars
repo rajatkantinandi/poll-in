@@ -4,7 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#E6E6FA" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="Description" content="Poll-in: Voting App based on @freeCodeCamp full stack app development curriculum. Also available on Android.">
   <title>{{title}}</title>
   <link rel="stylesheet" href="{{style}}">
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -26,7 +28,9 @@
     {{else}}
     <div class="logged-in-area">
       <button class="btn btn-green create-polls-btn" onclick="showcreate(event)">+ New Poll</button>
-      <button id="usericon" data-userid="{{userid}}" class="btn btn-green" data-username="{{username}}" onclick="userpage(event)">👤 {{username}}</a>
+      <button id="usericon" data-userid="{{userid}}" class="btn btn-green" data-username="{{username}}" onclick="userpage(event)">👤
+        {{username}}
+        </a>
         <button id="signout" class="btn btn-red" onclick="signout()">Sign Out</button>
         <div class="hamburger-menu">
           <h3 style="padding:4px 8px;border-radius:10px;background:navajowhite;cursor: pointer;">Popular Polls</h3>
@@ -94,7 +98,8 @@
   </div>
   <div class="main-content" {{#if loggedout}}style="margin-left:0px;" {{/if}}>
     <div class="download-native-app">
-      <a href="https://github.com/rajatkantinandi/poll-in-native/releases" target="_blank"> Download the native android app for better experience</a>
+      <a href="https://github.com/rajatkantinandi/poll-in-native/releases" target="_blank"> Download the native android app
+        for better experience</a>
     </div>
     {{#if loggedout}} {{else}}
     <div class="create-polls">
@@ -110,7 +115,9 @@
         </div>
         <br/>
         <center>
-          <a class="btn btn-green" href="javascript:console.log('addnew');" id="add-option-btn" style="width:60%;display:block;" onclick="addOptn(event)">Add Option</a>
+          <a class="btn btn-green" href="javascript:console.log('addnew');" id="add-option-btn" style="width:60%;display:block;" onclick="addOptn(event)">Add
+            Option
+          </a>
           <button type="submit" class="btn btn-blue" style="width:45%">Publish Poll</button>
           <button type="reset" class="btn btn-black" style="width:45%">Clear</button>
         </center>

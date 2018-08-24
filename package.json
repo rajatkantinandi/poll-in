@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/rajatkantinandi/poll-in#readme",
   "dependencies": {
+    "compression": "^1.7.3",
     "cors": "^2.8.4",
     "dotenv": "^5.0.1",
     "express": "^4.16.2",
